@@ -7,8 +7,8 @@
 //
 
 import Foundation
-
-struct Message: Codable {
+//Hashable 
+struct Message: Hashable, Codable {
     
     let text: String
     let sender: String

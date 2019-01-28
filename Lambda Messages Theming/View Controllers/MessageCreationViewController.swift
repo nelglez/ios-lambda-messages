@@ -12,7 +12,7 @@ class MessageCreationViewController: UIViewController, UINavigationBarDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setupAppearances()
         navigationBar.delegate = self
     }
     
@@ -35,6 +35,23 @@ class MessageCreationViewController: UIViewController, UINavigationBarDelegate {
             }
         })
     }
+    
+    private func setupAppearances() {
+        view.backgroundColor = AppearanceHelper.backgroundGray
+        messageTextView.font = AppearanceHelper.applicationFont(with: .body, pointSize: 28)
+        messageTextView.layer.borderColor = UIColor.white.cgColor
+        messageTextView.layer.borderWidth = 0.5
+        messageTextView.textColor = .white
+      //  messageTextView.textInputView.backgroundColor = AppearanceHelper.backgroundGray
+        messageTextView.backgroundColor = AppearanceHelper.backgroundGray
+        messageTextView.layer.cornerRadius = 8
+        
+        messageTextView.keyboardAppearance = .dark
+        
+        AppearanceHelper.style(button: clearTextButton)
+        AppearanceHelper.style(button: sendMessageButton)
+    }
+    
     
     @IBAction func discardMessage(_ sender: Any) {
         dismiss(animated: true, completion: nil)

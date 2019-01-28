@@ -13,6 +13,19 @@ let messagesWereUpdatedNotification = Notification.Name("MessagesWereUpdated")
 
 class MessageController {
     
+    private let baseURL = URL(string: "https://lambda-message-board.firebaseio.com/messages")!
+    
+    var messages: [Message] = [] {
+        didSet {
+            guard messages != oldValue else {return}
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: messagesWereUpdatedNotification, object: nil, userInfo: nil)
+            }
+        }
+    }
+    
+    //MARK: - CRUD
+    
     func createMessage(with text: String, completion: @escaping ((Error?) -> Void) = { _ in}) {
         
         guard let sender = AuthenticationHelper.currentUser else { fatalError("No current user") }
@@ -23,6 +36,8 @@ class MessageController {
         
         put(message: message, completion: completion)
     }
+    
+    //MARK: - NSURL
     
     func fetchMessages(completion: @escaping ((Error?) -> Void) = { _ in }) {
         
@@ -82,14 +97,5 @@ class MessageController {
         }.resume()
         
     }
-    
-    private let baseURL = URL(string: "https://lambda-message-board.firebaseio.com/messages")!
-    
-    var messages: [Message] = [] {
-        didSet {
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: messagesWereUpdatedNotification, object: nil, userInfo: nil)
-            }
-        }
-    }
+       
 }
